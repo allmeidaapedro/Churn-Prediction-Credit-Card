@@ -54,3 +54,4 @@ class CustomException(Exception):
             str: The detailed error message.
         '''
         return self.detailed_error_message
+    
