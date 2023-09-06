@@ -181,7 +181,7 @@ def categorical_plots(data, features, hue=None, orient='v', palette="Set2"):
         num_cols = 2 if num_features > 1 else 1
         
         # Create subplots
-        fig, axes = plt.subplots(num_rows, num_cols, figsize=(24, 6*num_rows), gridspec_kw={'hspace': 0.25, 'wspace': 0.2})
+        fig, axes = plt.subplots(num_rows, num_cols, figsize=(22, 6*num_rows), gridspec_kw={'hspace': 0.25, 'wspace': 0.2})
         
         # Flatten the axes list for easy iteration
         axes = axes.flatten()
