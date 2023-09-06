@@ -22,37 +22,10 @@ from warnings import filterwarnings
 filterwarnings('ignore')
 
 
-def sns_plots(data, features, histplot=True, countplot=False,     
+def numerical_plots(data, features, histplot=True,     
               barplot=False, barplot_y=None, boxplot=False, 
               boxplot_x=None, outliers=False, kde=False, 
               hue=None):
-    '''
-    Generate Seaborn plots for visualization.
-
-    This function generates various types of Seaborn plots based on the provided
-    data and features. Supported plot types include histograms, count plots,
-    bar plots, box plots, and more.
-
-    Args:
-        data (DataFrame): The DataFrame containing the data to be visualized.
-        features (list): A list of feature names to visualize.
-        histplot (bool, optional): Generate histograms. Default is True.
-        countplot (bool, optional): Generate count plots. Default is False.
-        barplot (bool, optional): Generate bar plots. Default is False.
-        barplot_y (str, optional): The name of the feature for the y-axis in bar plots.
-        boxplot (bool, optional): Generate box plots. Default is False.
-        boxplot_x (str, optional): The name of the feature for the x-axis in box plots.
-        outliers (bool, optional): Show outliers in box plots. Default is False.
-        kde (bool, optional): Plot Kernel Density Estimate in histograms. Default is False.
-        hue (str, optional): The name of the feature to use for color grouping. Default is None.
-
-    Returns:
-        None
-
-    Raises:
-        CustomException: If an error occurs during the plot generation.
-
-    '''
     
     try:
         num_features = len(features)
