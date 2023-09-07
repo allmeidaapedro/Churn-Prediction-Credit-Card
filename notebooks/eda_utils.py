@@ -22,10 +22,37 @@ from warnings import filterwarnings
 filterwarnings('ignore')
 
 
-def numerical_plots(data, features, histplot=True,     
+def sns_plots(data, features, histplot=True, countplot=False,     
               barplot=False, barplot_y=None, boxplot=False, 
               boxplot_x=None, outliers=False, kde=False, 
-              hue=None):
+              hue=None, palette='Set2'):
+    '''
+    Generate Seaborn plots for visualization.
+
+    This function generates various types of Seaborn plots based on the provided
+    data and features. Supported plot types include histograms, count plots,
+    bar plots, box plots, and more.
+
+    Args:
+        data (DataFrame): The DataFrame containing the data to be visualized.
+        features (list): A list of feature names to visualize.
+        histplot (bool, optional): Generate histograms. Default is True.
+        countplot (bool, optional): Generate count plots. Default is False.
+        barplot (bool, optional): Generate bar plots. Default is False.
+        barplot_y (str, optional): The name of the feature for the y-axis in bar plots.
+        boxplot (bool, optional): Generate box plots. Default is False.
+        boxplot_x (str, optional): The name of the feature for the x-axis in box plots.
+        outliers (bool, optional): Show outliers in box plots. Default is False.
+        kde (bool, optional): Plot Kernel Density Estimate in histograms. Default is False.
+        hue (str, optional): The name of the feature to use for color grouping. Default is None.
+
+    Returns:
+        None
+
+    Raises:
+        CustomException: If an error occurs during the plot generation.
+
+    '''
     
     try:
         num_features = len(features)
@@ -40,15 +67,22 @@ def numerical_plots(data, features, histplot=True,
             ax = axes[row, col] if num_rows > 1 else axes[col] 
             
             if countplot:
-                sns.countplot(data=data, x=feature, hue=hue, ax=ax)
+                sns.countplot(data=data, x=feature, hue=hue, ax=ax, palette=palette)
+                
+                for p in ax.patches:
+                    ax.annotate(f'{round(p.get_height())}', (p.get_x() + p.get_width() / 2, p.get_height() + 1),
+                            ha='center', va='bottom')
+            
+                ax.set_title(feature)  
+                ax.set_xlabel('')
             elif barplot:
-                sns.barplot(data=data, x=feature, y=barplot_y, hue=hue, ax=ax)
+                sns.barplot(data=data, x=feature, y=barplot_y, hue=hue, ax=ax, palette=palette)
             elif boxplot:
-                sns.boxplot(data=data, x=boxplot_x, y=feature, showfliers=outliers, ax=ax)
+                sns.boxplot(data=data, x=boxplot_x, y=feature, showfliers=outliers, ax=ax, palette=palette)
             elif outliers:
-                sns.boxplot(data=data, x=feature, ax=ax)
+                sns.boxplot(data=data, x=feature, ax=ax, palette=palette)
             else:
-                sns.histplot(data=data, x=feature, hue=hue, kde=kde, ax=ax)
+                sns.histplot(data=data, x=feature, hue=hue, kde=kde, ax=ax, palette=palette)
 
             ax.set_title(feature)  
             ax.set_xlabel('')  
@@ -114,85 +148,6 @@ def check_outliers(data, features):
             print(f'{feature}: {count} ({round(count/len(data)*100, 2)})%')
 
         return outlier_indexes, outlier_counts, total_outliers
-    
-    except Exception as e:
-        raise CustomException(e, sys)
-
-
-def categorical_plots(data, features, hue=None, orient='v', palette="Set2"):
-    '''
-    Create categorical count plots for a list of features in a DataFrame.
-
-    This function generates categorical count plots for a specified list of features in a given DataFrame.
-    The plots can be oriented vertically or horizontally, and a color palette can be applied for differentiation.
-
-    Parameters:
-    - data: DataFrame containing the data.
-    - features: List of categorical features to plot.
-    - hue: Optional categorical variable for color differentiation.
-    - orient: Orientation of the count plots ('v' if vertical or 'h' if horizontal).
-    - palette: Seaborn color palette to use for the plots.
-
-    Returns:
-    - None (displays the plots).
-
-    Exceptions:
-    - CustomException: Raised if an error occurs during plot generation.
-
-    Example usage:
-    ```
-    categorical_plots(df, categorical_features, hue='some_hue_variable', orient='v', palette='Set2')
-    ```
-    '''
-    
-    try:
-        sns.set(style="whitegrid")
-        
-        # Calculate the number of rows and columns for subplot arrangement
-        num_features = len(features)
-        num_rows = num_features // 2 + num_features % 2
-        num_cols = 2 if num_features > 1 else 1
-        
-        # Create subplots
-        fig, axes = plt.subplots(num_rows, num_cols, figsize=(24, 6*num_rows), gridspec_kw={'hspace': 0.25, 'wspace': 0.2})
-        
-        # Flatten the axes list for easy iteration
-        axes = axes.flatten()
-        
-        for i, feature in enumerate(features):
-            # Determine the current subplot
-            ax = axes[i]
-            
-            # Create the count plot based on orientation and hue
-            if orient == 'h':
-                sns.countplot(y=feature, data=data, hue=hue, palette=palette, ax=ax)
-                
-                # Add counts at the top of the bars
-                for p in ax.patches:
-                    ax.annotate(f'{round(p.get_width())}', (p.get_width() + 1, p.get_y() + p.get_height() / 2),
-                                ha='left', va='center')
-
-                ax.set_title(feature)  
-                ax.set_ylabel('')
-
-            else:
-                sns.countplot(x=feature, data=data, hue=hue, palette=palette, ax=ax)
-                
-                # Add counts at the top of the bars
-                for p in ax.patches:
-                    ax.annotate(f'{round(p.get_height())}', (p.get_x() + p.get_width() / 2, p.get_height() + 1),
-                                ha='center', va='bottom')
-            
-                ax.set_title(feature)  
-                ax.set_xlabel('')
-
-        # Remove any empty subplots
-        for i in range(num_features, len(axes)):
-            fig.delaxes(axes[i])
-        
-        # Adjust layout and show the plots
-        plt.tight_layout()
-        plt.show()
     
     except Exception as e:
         raise CustomException(e, sys)
