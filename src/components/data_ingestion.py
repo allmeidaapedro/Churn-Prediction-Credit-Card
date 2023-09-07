@@ -86,27 +86,39 @@ class DataIngestion:
         '''
         
         try:
+            logging.info('Reading the dataset as a Pandas DataFrame and saving it as a csv.')
+
             df = pd.read_csv('notebooks\data\BankChurners.csv')
-            logging.info('Read the dataset as a Pandas DataFrame.')
-
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
-
             df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
 
-            # Getting X and y to set stratify=y when splitting the data. This will ensure each target class proportion will be preserved after the splitting. It is a strategy for dealing with imbalanced target.
-            X = df.drop(columns=['Attrition_Flag'])
+            logging.info('Dropping irrelevant features and obtaining X and y.')
+
+            features_to_drop = ['Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_2', 'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_1', 'CLIENTNUM']
+
+            X = df.drop(columns=['Attrition_Flag']+features_to_drop)
             y = df['Attrition_Flag'].copy()
 
             logging.info('Train test split started.')
+
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
             # Getting back train and test entire sets.
             train = pd.concat([X_train, y_train], axis=1)
             test = pd.concat([X_test, y_test], axis=1)
 
+            logging.info('Renaming features and saving train and test sets into a csv.')
+
+            # Renaming the features on a standard format.
+            train.columns = [x.lower() for x in train.columns]
+            test.columns = [x.lower() for x in test.columns]
+
+            # Renaming target feature for interpretation.
+            train.rename(columns={'attrition_flag': 'churn_flag'}, inplace=True)
+            test.rename(columns={'attrition_flag': 'churn_flag'}, inplace=True)
+            
             train.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
             test.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
-            logging.info('Finished data ingestion.')
 
             return self.ingestion_config.train_data_path, self.ingestion_config.test_data_path
         
