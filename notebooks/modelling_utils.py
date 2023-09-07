@@ -165,17 +165,16 @@ def evaluate_classifier(y_true, y_pred, probas):
         plt.show()
         
         # ROC AUC Curve and score
-        fpr, tpr, threshold = roc_curve(y_true, probas)
-        roc_auc = roc_auc_score(fpr, tpr)
+        fpr, tpr, thresholds = roc_curve(y_true, probas)
+        auc = roc_auc_score(y_true, probas)
 
-        plt.title('Receiver Operating Characteristic Curve')
-        plt.plot(fpr, tpr, 'b', label = 'AUC = %0.2f' % roc_auc)
-        plt.legend(loc = 'lower right')
-        plt.plot([0, 1], [0, 1],'r--')
-        plt.xlim([0, 1])
-        plt.ylim([0, 1])
-        plt.ylabel('True Positive Rate')
+        plt.figure(figsize=(5, 3))
+        plt.plot(fpr, tpr, label=f'AUC = {auc:.2f}')
+        plt.plot([0, 1], [0, 1], linestyle='--', color='gray')  # Random guessing line
         plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('Receiver Operating Characteristic (ROC) Curve')
+        plt.legend()
         plt.show()
 
     except Exception as e:
