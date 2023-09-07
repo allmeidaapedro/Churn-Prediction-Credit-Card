@@ -83,7 +83,7 @@
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('credit-form');
+            const form = document.getElementById('churn-form');
             const predictionResult = document.getElementById('prediction-result');
 
             form.addEventListener('submit', async function(event) {
@@ -183,9 +183,6 @@
             <label for="credit_limit">Credit Limit:</label>
             <input type="number" id="credit_limit" name="credit_limit" required>
 
-            <label for="credit_limit">Credit Limit:</label>
-            <input type="number" id="credit_limit" name="credit_limit" required>
-
             <label for="total_revolving_bal">Total Revolving Balance:</label>
             <input type="number" id="total_revolving_bal" name="total_revolving_bal" required>
             
@@ -193,7 +190,7 @@
             <input type="number" id="avg_open_to_buy" name="avg_open_to_buy" required>
 
             <label for="total_amt_chng_q4_q1">Total Amount Change:</label>
-            <input type="number" id="total_amt_chng_q4_q1" name="total_amt_chng_q4_q1" required>
+            <input type="number" step="any" id="total_amt_chng_q4_q1" name="total_amt_chng_q4_q1" required>
 
             <label for="total_trans_amt">Total Transaction Amount:</label>
             <input type="number" id="total_trans_amt" name="total_trans_amt" required>
@@ -202,10 +199,10 @@
             <input type="number" id="total_trans_ct" name="total_trans_ct" required>
 
             <label for="total_ct_chng_q4_q1">Total Count Change:</label>
-            <input type="number" id="total_ct_chng_q4_q1" name="total_ct_chng_q4_q1" required>
+            <input type="number" step="any" id="total_ct_chng_q4_q1" name="total_ct_chng_q4_q1" required>
 
             <label for="avg_utilization_ratio">Average Utilization Ratio:</label>
-            <input type="number" id="avg_utilization_ratio" name="avg_utilization_ratio" required>
+            <input type="number" id="avg_utilization_ratio" step="any" name="avg_utilization_ratio" required>
 
             <button type="submit">Submit</button>
         </form>
