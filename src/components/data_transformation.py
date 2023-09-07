@@ -147,6 +147,9 @@ class DataTransformation:
             train['gender'] = train['gender'].map({'M': 1, 'F': 0})
             train['churn_flag'] = train['churn_flag'].map({'Attrited Customer': 1, 'Existing Customer': 0})
 
+            test['gender'] = test['gender'].map({'M': 1, 'F': 0})
+            test['churn_flag'] = test['churn_flag'].map({'Attrited Customer': 1, 'Existing Customer': 0})
+
             # Getting train and test predictor and target sets.
             X_train = train.drop(columns=['churn_flag'])
             y_train = train['churn_flag'].copy()
