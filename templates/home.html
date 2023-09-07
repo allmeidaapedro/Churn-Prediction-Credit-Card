@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank's Credit Card Customers Churn Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        header {
+            background-color: #66c2a5;
+            color: #ffffff;
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+
+        .prediction-container {
+            flex-grow: 1;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #66c2a5;
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #fc8d62;
+        }
+
+        #prediction-result {
+            text-align: center;
+            font-size: 40px; 
+            color: black; 
+            margin-top: 3rem; 
+            padding: 2rem 0;
+        }
+
+        .prediction-value {
+            font-weight: bold;
+            color: black;
+            margin-left: 5px; 
+        }
+
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('credit-form');
+            const predictionResult = document.getElementById('prediction-result');
+
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault(); 
+
+                const formData = new FormData(form);
+
+                const response = await fetch('/predictdata', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.text();
+                predictionResult.innerHTML = result;
+
+                
+                form.reset();
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Bank</h1>
+        <p>Credit Card Churn Prediction</p>
+    </header>
+    <div class="container">
+        <h2>Churn Form</h2>
+        <form id="churn-form">
+            <label for="customer_age">Customer Age:</label>
+            <input type="number" id="customer_age" name="customer_age" required>
+            
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="M">M</option>
+                <option value="F">F</option>
+            </select>
+            
+            <label for="dependent_count">Dependent Count:</label>
+            <input type="number" id="dependent_count" name="dependent_count" required>
+
+            <label for="education_level">Education Level:</label>
+            <select id="education_level" name="education_level" required>
+                <option value="" disabled selected>Select Education Level</option>
+                <option value="Uneducated">Uneducated</option>
+                <option value="High School">High School</option>
+                <option value="College">College</option>
+                <option value="Graduate">Graduate</option>
+                <option value="Post-Graduate">Post-Graduate</option>
+                <option value="Doctorate">Doctorate</option>
+                <option value="Unknown">Unknown</option>
+            </select>
+
+            <label for="marital_status">Marital Status:</label>
+            <select id="marital_status" name="marital_status" required>
+                <option value="" disabled selected>Select Marital Status</option>
+                <option value="Married">Married</option>
+                <option value="Single">Single</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Unknown">Unknown</option>
+            </select>
+            
+            <label for="income_category">Income Category:</label>
+            <select id="income_category" name="income_category" required>
+                <option value="" disabled selected>Select Income Category</option>
+                <option value="Less than $40K">Less than $40K</option>
+                <option value="$40K - $60K">$40K - $60K</option>
+                <option value="$60K - $80K">$60K - $80K</option>
+                <option value="$80K - $120K">$80K - $120K</option>
+                <option value="$120K +">$120K +</option>
+                <option value="Unknown">Unknown</option>
+
+            </select>
+
+            <label for="card_category">Card Category:</label>
+            <select id="card_category" name="card_category" required>
+                <option value="" disabled selected>Select Card Category</option>
+                <option value="Blue">Blue</option>
+                <option value="Silver">Silver</option>
+                <option value="Gold">Gold</option>
+                <option value="Platinum">Platinum</option>
+            </select>
+            
+            <label for="months_on_book">Months on Book:</label>
+            <input type="number" id="months_on_book" name="months_on_book" required>
+
+            <label for="total_relationship_count">Total Relationship Count:</label>
+            <input type="number" id="total_relationship_count" name="total_relationship_count" required>
+
+            <label for="months_inactive_12_mon">Months Inactive in the Last 12 Months:</label>
+            <input type="number" id="months_inactive_12_mon" name="months_inactive_12_mon" required>
+
+            <label for="contacts_count_12_mon">Contacts Count in the Last 12 Months:</label>
+            <input type="number" id="contacts_count_12_mon" name="contacts_count_12_mon" required>
+
+            <label for="credit_limit">Credit Limit:</label>
+            <input type="number" id="credit_limit" name="credit_limit" required>
+
+            <label for="credit_limit">Credit Limit:</label>
+            <input type="number" id="credit_limit" name="credit_limit" required>
+
+            <label for="total_revolving_bal">Total Revolving Balance:</label>
+            <input type="number" id="total_revolving_bal" name="total_revolving_bal" required>
+            
+            <label for="avg_open_to_buy">Average Open to Buy:</label>
+            <input type="number" id="avg_open_to_buy" name="avg_open_to_buy" required>
+
+            <label for="total_amt_chng_q4_q1">Total Amount Change:</label>
+            <input type="number" id="total_amt_chng_q4_q1" name="total_amt_chng_q4_q1" required>
+
+            <label for="total_trans_amt">Total Transaction Amount:</label>
+            <input type="number" id="total_trans_amt" name="total_trans_amt" required>
+            
+            <label for="total_trans_ct">Total Transaction Count:</label>
+            <input type="number" id="total_trans_ct" name="total_trans_ct" required>
+
+            <label for="total_ct_chng_q4_q1">Total Count Change:</label>
+            <input type="number" id="total_ct_chng_q4_q1" name="total_ct_chng_q4_q1" required>
+
+            <label for="avg_utilization_ratio">Average Utilization Ratio:</label>
+            <input type="number" id="avg_utilization_ratio" name="avg_utilization_ratio" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div class="prediction-container">
+        <h2 id="prediction-result">
+            Will the customer churn? <span class="prediction-value">{{ prediction }}</span>
+        </h2>
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="predict-button" onclick="window.location.href='/'">Home Page</button>
+        </div>
+    </div>
+</body>
+</html>
