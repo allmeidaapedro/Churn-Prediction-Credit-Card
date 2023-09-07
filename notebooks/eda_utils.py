@@ -45,6 +45,7 @@ def sns_plots(data, features, histplot=True, countplot=False,
         outliers (bool, optional): Show outliers in box plots. Default is False.
         kde (bool, optional): Plot Kernel Density Estimate in histograms. Default is False.
         hue (str, optional): The name of the feature to use for color grouping. Default is None.
+        palette (str, optional): Seaborn color palette to use for the plots.
 
     Returns:
         None
@@ -68,17 +69,10 @@ def sns_plots(data, features, histplot=True, countplot=False,
             
             if countplot:
                 sns.countplot(data=data, x=feature, hue=hue, ax=ax, palette=palette)
-                
-                for p in ax.patches:
-                    ax.annotate(f'{round(p.get_height())}', (p.get_x() + p.get_width() / 2, p.get_height() + 1),
-                            ha='center', va='bottom')
-            
-                ax.set_title(feature)  
-                ax.set_xlabel('')
             elif barplot:
                 sns.barplot(data=data, x=feature, y=barplot_y, hue=hue, ax=ax, palette=palette)
             elif boxplot:
-                sns.boxplot(data=data, x=boxplot_x, y=feature, showfliers=outliers, ax=ax, palette=palette)
+                sns.boxplot(data=data, x=boxplot_x, y=feature, ax=ax, palette=palette)
             elif outliers:
                 sns.boxplot(data=data, x=feature, ax=ax, palette=palette)
             else:
