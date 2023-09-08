@@ -89,3 +89,14 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 3. As XGBoost had the highest average validation score, I chose it for hyperparameter tuning and final model evaluation.
 
 <img src="images/models_performances_kfold_cv.png">
+
+4. I tuned XGBoost model with Bayesian Search because it uses probabilistic models to intelligently explore the hyperparameter space, balancing exploration and exploitation. An important point here was to define a class_weight hyperparameter, such that the estimator was able to better learn the patterns in minority target class (churn customers).
+5. I evaluated the results and looked at precision-recall trade-off. By dealing with this trade-off, I was able to select a threshold value that improved the recall metric from 0.94 to 0.96. However, the precision score fell down from 0.85 to 0.76.
+6. Given that generating probability scores for each customer is typically more valuable for businesses than making binary predictions (1/0), as it enables better decision-making and more effective customer retention strategies, and considering that the recall increased by only 0.2 while precision decreased by 0.9, I have decided not to use the threshold for predictions and not to balance the precision-recall trade-off.
+7. Anyway, the final XGBoost performance was excellent. A 0.94 recall indicates that the model correctly identifies 94% of the churners. Furthermore, a 0.85 precision indicates that, out of all customers predicted as churn, 85% of them are actually churners.
+
+<img src="images/class_report.jpeg">
+
+8. Although one characteristic of ensemble models like XGBoost is the lack of interpretability, it was possible to interpret and confirm that the estimator results make sense and reinforce the insights found in the EDA (Exploratory Data Analysis) step by examining feature importances. The following features clearly demonstrated discrimination between attrited and existing customers.
+
+<img src="images/feature_importances.png>
