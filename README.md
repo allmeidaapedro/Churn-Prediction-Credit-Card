@@ -102,3 +102,14 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 <img src="images/feature_importances.png">
 
 9. Finally, the results are excellent and the project objective was achieved. Now, the bank can access customer churn probabilities, facilitating informed decisions. This empowers strategic retention efforts and enhances decision-making.
+
+# 7. Web app and next steps
+Once I built a model that is able to identify 94% of the churners, I developed a Flask web app such that the bank can get a customer's probability of churning by giving the input features information, solving the business problem. For the next steps, I will be focused on deploying this app in a cloud like AWS (I already defined a file containing Elastic Beanstalk configuration, .ebextensions/config.py). Anyway, I describe in the next topic how you can run this project on your local machine.
+
+Web app home page:
+<img src="images/web_app_1.jpeg>
+
+Web app predictions page:
+<img src="images/web_app_2.jpeg>
+
+# 8. Run this project on your local machine
