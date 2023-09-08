@@ -81,7 +81,7 @@ def predict_datapoint():
             total_ct_chng_q4_q1=request.form.get('total_ct_chng_q4_q1'),
             avg_utilization_ratio=request.form.get('avg_utilization_ratio')
         )
-        
+
         input_df = input_data.get_input_data_df()
         print(input_df)
         print('\nBefore prediction.')

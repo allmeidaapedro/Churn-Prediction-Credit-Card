@@ -75,7 +75,7 @@ class PredictPipeline:
             logging.info('Mapping gender variable.')
 
             # Gender variable mapping needed.
-            features['Gender'] = features['Gender'].map({'M': 1, 'F': 0})
+            features['gender'] = features['gender'].map({'M': 1, 'F': 0})
 
             logging.info('Preprocessing the input data.')
 
@@ -91,9 +91,9 @@ class PredictPipeline:
             prediction = (predicted_proba[:, 1] >= THRESHOLD).astype(int)
 
             if prediction[0] == 1:
-                prediction = f'This customer will CHURN with a {round(predicted_proba[:, 1], 2)} probability score.'
+                prediction = f'This customer will CHURN with a {predicted_proba[:, 1]} probability score.'
             else:
-                prediction = f'This customer will not CHURN. His probability score is {round(predicted_proba[:, 1], 2)}.'
+                prediction = f'This customer will not CHURN. His probability score is {predicted_proba[:, 1]}.'
 
             logging.info('Prediction successfully made.')
 
@@ -140,7 +140,8 @@ class InputData:
         This class assumes the availability of the pandas library and defines the CustomException class.
     '''
 
-    def __init__(customer_age: int,
+    def __init__(self,
+                 customer_age: int,
                  gender: str,
                  dependent_count: int,
                  education_level: str,
