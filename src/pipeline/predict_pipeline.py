@@ -84,16 +84,12 @@ class PredictPipeline:
             logging.info('Input data prepared for prediction.')
 
             logging.info('Predicting.')
+            
+            # Predicting customer's churn probability.
+            predicted_proba = model.predict_proba(prepared_data)[:, 1][0]
 
-            # Predict using the threshold that provided a recall score of 0.96 in the modelling notebook.
-            THRESHOLD = 0.2867737114429474
-            predicted_proba = model.predict_proba(prepared_data)
-            prediction = (predicted_proba[:, 1] >= THRESHOLD).astype(int)
-
-            if prediction[0] == 1:
-                prediction = f'This customer will CHURN with a {predicted_proba[:, 1]} probability score.'
-            else:
-                prediction = f'This customer will not CHURN. His probability score is {predicted_proba[:, 1]}.'
+            # Prediction output (customer's probability of churning).
+            prediction = f'This customer has a {round(predicted_proba, 3)} probability of churning.'
 
             logging.info('Prediction successfully made.')
 
