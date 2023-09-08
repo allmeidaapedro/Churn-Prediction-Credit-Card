@@ -99,6 +99,6 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 
 8. Although one characteristic of ensemble models like XGBoost is the lack of interpretability, it was possible to interpret and confirm that the estimator results make sense and reinforce the insights found in the EDA (Exploratory Data Analysis) step by examining feature importances. The following features clearly demonstrated discrimination between attrited and existing customers.
 
-<img src="images/feature_importances.png>
+<img src="images/feature_importances.png">
 
 9. Finally, the results are excellent and the project objective was achieved. Now, the bank can access customer churn probabilities, facilitating informed decisions. This empowers strategic retention efforts and enhances decision-making.
