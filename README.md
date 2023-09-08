@@ -82,3 +82,10 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 8. Credit limit and average utilization ratio present an exponential decreasing relationship! This indicates that, as credit limit increases, the average utilization ratio decreases at an exponential rate. Thus, customers with higher credit limits use their credit cards less.
 
 <img src="images/scatterplots.png">
+
+# 6. Modelling
+1. I chose a set of models for performance comparison, analyzing the ROC-AUC score. Accuracy is not a good metric because the target is imbalanced.
+2. In order to select the best model for hyperparameter tuning and final evaluation, I trained and evaluated each of the models using stratified k-fold cross-validation, which provides a more reliable performance estimate.
+3. As XGBoost had the highest average validation score, I chose it for hyperparameter tuning and final model evaluation.
+
+<img src="images/models_performances_kfold_cv.png">
