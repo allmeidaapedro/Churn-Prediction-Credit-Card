@@ -20,8 +20,7 @@ class PredictPipeline:
     Class for making predictions using a trained model and preprocessor.
 
     This class provides a pipeline for making predictions on new instances using a trained machine learning model and
-    a preprocessor. It loads the model and preprocessor from files, preprocesses the input features, and applies a
-    predefined threshold for making predictions.
+    a preprocessor. It loads the model and preprocessor from files, preprocesses the input features, and makes predictions.
 
     Methods:
         predict(features):
@@ -33,8 +32,10 @@ class PredictPipeline:
         prediction = pipeline.predict(new_features)
 
     Note:
-        This class assumes the availability of the load_object function and defines the THRESHOLD value.
+        This class assumes the availability of the load_object function.
     '''
+
+    
     def __init__(self) -> None:
         '''
         Initializes a PredictPipeline instance.
@@ -56,8 +57,6 @@ class PredictPipeline:
 
         Raises:
             CustomException: If an exception occurs during the prediction process.
-        
-        Note: The predictions are made by comparing the model's estimated probabilities of the customer being churner with a threshold value. If the probability is greater than it, the instance is classified as positive, else negative. The threshold was chosen during modelling notebook, where I saw that its value provides a recall score of 0.96 (the metric of interest).
         '''
         try:
 
