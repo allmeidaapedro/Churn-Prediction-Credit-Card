@@ -62,7 +62,7 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 # 5. Main business insights
 1. The bank presents a high churn rate. Approximately 16% of the customers churned. This motivates our project.
 
-<img src="images/churn.jpg">
+<img src="images/target.png">
 
 2. Customers who churn tend to have lower credit limits, revolving balances, transaction amounts, transaction counts, changes in transaction counts, and average utilization ratios. This makes total sense because when a client is about to discontinue the service, he will make fewer transactions, resulting in lower values of these attributes.
 
