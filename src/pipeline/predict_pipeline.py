@@ -89,7 +89,8 @@ class PredictPipeline:
             predicted_proba = model.predict_proba(prepared_data)[:, 1][0]
 
             # Prediction output (customer's probability of churning).
-            prediction = f'This customer has a {round(predicted_proba, 3)} probability of churning.'
+            prediction = f"""Customer's probability of churning:
+                             {round(predicted_proba * 100, 3)}%"""
 
             logging.info('Prediction successfully made.')
 
