@@ -95,8 +95,9 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 6. Given that generating probability scores for each customer is typically more valuable for businesses than making binary predictions (1/0), as it enables better decision-making and more effective customer retention strategies, and considering that the recall increased by only 0.2 while precision decreased by 0.9, I have decided not to use the threshold for predictions and not to balance the precision-recall trade-off.
 7. Anyway, the final XGBoost performance was excellent. A 0.94 recall indicates that the model correctly identifies 94% of the churners. Furthermore, a 0.85 precision indicates that, out of all customers predicted as churn, 85% of them are actually churners.
 
-<img src="images/class_report.jpeg">
-
+<div style="text-align: center;">
+  <img src="images/class_report.jpeg" alt="Centered Image">
+</div>
 8. Although one characteristic of ensemble models like XGBoost is the lack of interpretability, it was possible to interpret and confirm that the estimator results make sense and reinforce the insights found in the EDA (Exploratory Data Analysis) step by examining feature importances. The following features clearly demonstrated discrimination between attrited and existing customers.
 
 <img src="images/feature_importances.png>
