@@ -64,13 +64,17 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 
 <img src="images/numeric_distributions_by_churn.png">
 
-2. Churners tend to have fewer products from the bank.
-3. Most of the customers (approximately 65% of them) contacted the bank 2 or 3 times in the last 12 months. The bank must pay attention to this and discover the reasons why customers are calling. Are they dissatisfied with the credit card service? If so, what specifically is causing their dissatisfaction? Also, when a client makes more than 5 contacts in a year, he will probably skip the service.
-4. Most of the customers were inactive for 2 or 3 months in the last 12 months. Particularly, 90% of them were inactive from 1 to 3 months in this period. The bank must plan strategies not only to increase the utilization ratio, but also to avoid customer inactivity.
+2. The bank must be alert to the distribution of the average utilization ratio. Being right-skewed means that most customers have a low utilization of the service. Particularly, the majority of them present zero utilization ratio. Therefore, the company must plan strategies to increase utilization and, consequently, revenue.
+
+<img src="images/avg_utilization_ratio_hist.png">
+
+3. Churners tend to have fewer products from the bank.
+4. Most of the customers (approximately 65% of them) contacted the bank 2 or 3 times in the last 12 months. The bank must pay attention to this and discover the reasons why customers are calling. Are they dissatisfied with the credit card service? If so, what specifically is causing their dissatisfaction? Also, when a client makes more than 5 contacts in a year, he will probably skip the service.
+5. Most of the customers were inactive for 2 or 3 months in the last 12 months. Particularly, 90% of them were inactive from 1 to 3 months in this period. The bank must plan strategies not only to increase the utilization ratio, but also to avoid customer inactivity.
 
 <img src="images/rel_cont_inact_countplots.png">
 
-5. Customer age and months on book are strongly positively correlated. The older a customer is, the more time he spends consuming the bank's credit card services and vice-versa. Thus, the company must focus its efforts on retaining the old loyal customers and increase the tenure of younger ones.
-6. Credit limit and average utilization ratio present an exponential decreasing relationship! This indicates that, as credit limit increases, the average utilization ratio decreases at an exponential rate. Thus, customers with higher credit limits use their credit cards less.
+6. Customer age and months on book are strongly positively correlated. The older a customer is, the more time he spends consuming the bank's credit card services and vice-versa. Thus, the company must focus its efforts on retaining the old loyal customers and increase the tenure of younger ones.
+7. Credit limit and average utilization ratio present an exponential decreasing relationship! This indicates that, as credit limit increases, the average utilization ratio decreases at an exponential rate. Thus, customers with higher credit limits use their credit cards less.
 
 <img src="images/scatterplots.png">
