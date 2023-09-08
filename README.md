@@ -98,6 +98,7 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 <div style="text-align: center;">
   <img src="images/class_report.jpeg" alt="Centered Image">
 </div>
+
 8. Although one characteristic of ensemble models like XGBoost is the lack of interpretability, it was possible to interpret and confirm that the estimator results make sense and reinforce the insights found in the EDA (Exploratory Data Analysis) step by examining feature importances. The following features clearly demonstrated discrimination between attrited and existing customers.
 
 <img src="images/feature_importances.png>
