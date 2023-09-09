@@ -118,7 +118,7 @@ Web app predictions page:
 
 Predicted churn probability output example:
 
-<img src="images/output_example.jpeg" height="350px" width="250px">
+<img src="images/output_example.jpeg" height="350px" width="200px">
 
 # 8. Run this project on your local machine
 Prerequisites:
