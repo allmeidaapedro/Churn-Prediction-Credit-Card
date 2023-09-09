@@ -115,6 +115,7 @@ Web app predictions page:
 <img src="images/web_app_2.jpeg">
 
 Predicted churn probability output example:
+
 <img src="images/output_example.jpeg">
 
 # 8. Run this project on your local machine
