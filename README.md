@@ -34,7 +34,7 @@ When deploying the model so that the bank can make predictions, the primary obje
 
 For instance, predicting the probability of churn provides more actionable insights. Instead of simply determining whether a customer will churn or not, you gain an understanding of how likely it is to happen. This information enables the bank to allocate its efforts and resources more effectively. For example, it can concentrate its retention efforts on customers with a high probability of churning.
 
-By doing this, we generate numerous benefits for the bank, such as:
+By doing this, we generate numerous benefits for the company, such as:
 
 1. Cost Savings
 2. Improved Customer Retention
