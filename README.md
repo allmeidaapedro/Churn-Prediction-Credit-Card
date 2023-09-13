@@ -101,11 +101,12 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 
 <img src="images/feature_importances.png">
 
-9. I have estimated a baseline financial outcome to assess whether the project is worthwhile. Although I did not have access to specific data to obtain the exact financial gain, a common revenue source for credit card companies is charging fees on the outstanding balance, known as the total revolving balance, which cardholders carry from month to month. Thus, I assumed the bank's fee is 18% (a common value) and performed the estimation based on it. The calculation was derived from the difference between the true positive gain (a 10% fee charged on outstanding balances as a retention strategy), the cost of retaining false positives (an 8% discount given on outstanding balances), and the cost of false negatives churning (the entire 18% fee on outstanding balances that would have been received). Consequently, it was possible to achieve an estimated gain of $198,098.82, excellent! However, this is merely an estimation to illustrate the potential benefits of applying the model. The actual result will depend on how the bank manages retention strategies based on the predicted churn probabilities. For example, if the bank aims to be more conservative to avoid expenses related to false positives, it will focus on clients with higher churn probabilities, thereby affecting the resulting finances.
+# 7. Financial results
+1. I have estimated a baseline financial outcome to assess whether the project is worthwhile. Although I did not have access to specific data to obtain the exact financial gain, a common revenue source for credit card companies is charging fees on the outstanding balance, known as the total revolving balance, which cardholders carry from month to month. Thus, I assumed the bank's fee is 18% (a common value) and performed the estimation based on it. The calculation was derived from the difference between the true positive gain (a 10% fee charged on outstanding balances as a retention strategy), the cost of retaining false positives (an 8% discount given on outstanding balances), and the cost of false negatives churning (the entire 18% fee on outstanding balances that would have been received). Consequently, it was possible to achieve an estimated gain of $198,098.82, excellent! However, this is merely an estimation to illustrate the potential benefits of applying the model. The actual result will depend on how the bank manages retention strategies based on the predicted churn probabilities. For example, if the bank aims to be more conservative to avoid expenses related to false positives, it will focus on clients with higher churn probabilities, thereby affecting the resulting finances.
 
-10. Finally, the results are excellent and the project objective was achieved. Now, the bank can access customer churn probabilities, facilitating informed decisions. This empowers strategic retention efforts and enhances decision-making. Thus, the business problem is solved.
+2. Finally, the results are excellent and the project objective was achieved. Now, the bank can access customer churn probabilities, facilitating informed decisions. This empowers strategic retention efforts and enhances decision-making. Thus, the business problem is solved.
 
-# 7. Web app and next steps
+# 8. Web app and next steps
 Once I built a model that is able to identify 94% of the churners, I developed a Flask web app such that the bank can get a customer's probability of churning by giving the input features information, solving the business problem. For the next steps, I will be focused on deploying this app in a cloud like AWS (I already defined a file containing Elastic Beanstalk configuration, .ebextensions/config.py). Anyway, I describe in the next topic how you can run this project on your local machine.
 
 Web app home page:
@@ -120,7 +121,7 @@ Predicted churn probability output example:
 
 <img src="images/output_example.jpeg" height="350px" width="200px">
 
-# 8. Run this project on your local machine
+# 9. Run this project on your local machine
 Prerequisites:
 
 Before getting started, make sure you have the following installed on your machine:
@@ -182,12 +183,12 @@ When you're done with the project, deactivate the virtual environment.
 deactivate
 </pre>
 
-# 9. Dataset link
+# 10. Dataset link
 The dataset was collected from kaggle.
 
 Link: https://www.kaggle.com/datasets/sakshigoyal7/credit-card-customers?sort=votes
 
-# 10. Contact me
+# 11. Contact me
 Linkedin: https://www.linkedin.com/in/pedro-henrique-almeida-oliveira-77b44b237/
 
 Github: https://github.com/allmeidaapedro
