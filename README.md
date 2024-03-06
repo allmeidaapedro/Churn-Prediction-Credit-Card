@@ -183,7 +183,7 @@ The dataset was collected from kaggle.
 Link: https://www.kaggle.com/datasets/sakshigoyal7/credit-card-customers?sort=votes
 
 # 11. Contact me
-Linkedin: https://www.linkedin.com/in/pedro-henrique-almeida-oliveira-77b44b237/
+Linkedin: https://www.linkedin.com/in/pedro-almeida-ds/
 
 Github: https://github.com/allmeidaapedro
 
