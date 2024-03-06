@@ -65,7 +65,7 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 <img src="images/numeric_distributions_by_churn.png">
 
 4. Churners tend to have fewer products from the bank.
-5. Most of the customers (approximately 65% of them) contacted the bank 2 or 3 times in the last 12 months. The bank must pay attention to this and discover the reasons why customers are calling. Are they dissatisfied with the credit card service? If so, what specifically is causing their dissatisfaction? Also, when a client makes more than 5 contacts in a year, he will probably skip the service.
+5. 75% of the customers contacted the bank at least 2 times in the last 12 months. The bank must pay attention to this and discover the reasons why customers are calling. Are they dissatisfied with the credit card service? If so, what specifically is causing their dissatisfaction? Also, when a client makes more than 5 contacts in a year, he will probably skip the service.
 6. Most of the customers were inactive for 2 or 3 months in the last 12 months. Particularly, 90% of them were inactive from 1 to 3 months in this period. The bank must plan strategies not only to increase the utilization ratio, but also to avoid customer inactivity.
 
 <img src="images/rel_cont_inact_countplots.png">
@@ -76,7 +76,7 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 <img src="images/scatterplots.png">
 
 # 6. Modelling
-0. I preprocessed ordinal categorical variables with ordinal encoding, and the other with target encoding because one-hot encoder can be damage to tree-based models and I am focusing on predictive power and robust models such as XGBoost. To numerical and ordinal encoded features was applied standard scaling to test a bunch of models at once.
+0. I preprocessed ordinal categorical variables with ordinal encoding in order to preserve the ordinal information and avoid dimensionality increase, and the other with target encoding because one-hot encoder can be damage to tree-based models and I am focusing on predictive power and robust models such as XGBoost. To numerical and ordinal encoded features, I applied standard scaling to test a bunch of models at once (although tree-based model don't require scaling, linear models do).
 1. I chose a set of models for performance comparison, analyzing the ROC-AUC score. Accuracy is not a good metric because the target is imbalanced.
 2. In order to select the best model for hyperparameter tuning and final evaluation, I trained and evaluated each of the models using stratified k-fold cross-validation, which provides a more reliable performance estimate.
 3. As XGBoost had the highest average validation score, I chose it for hyperparameter tuning and final model evaluation. Although it is overfitted, it also has an outstanding performance on validation data. However, this is not due to data leakage or modeling problems, but the quality of this dataset. The set of independent variables we have clearly separates churners and non-churners.
@@ -84,15 +84,13 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 <img src="images/models_performances_kfold_cv.png">
 
 4. I tuned XGBoost model with Bayesian Search because it uses probabilistic models to intelligently explore the hyperparameter space, balancing exploration and exploitation. An important point here was to define a class_weight hyperparameter, such that the estimator was able to better learn the patterns in minority target class (churn customers).
-5. I evaluated the results and looked at precision-recall trade-off. By dealing with this trade-off, I was able to select a threshold value that improved the recall metric from 0.94 to 0.96. However, the precision score fell down from 0.85 to 0.76.
-6. Given that generating probability scores for each customer is typically more valuable for businesses than making binary predictions (1/0), as it enables better decision-making and more effective customer retention strategies, and considering that the recall increased by only 0.5 while precision decreased by 0.13, I have decided not to use the threshold for predictions and not to balance the precision-recall trade-off.
-7. Anyway, the final XGBoost performance was excellent. A 0.91 recall indicates that the model correctly identifies 91% of the churners. In practical terms, looking at the confusion matrix, it has accurately predicted 297 out of 325 attrited customers Furthermore, a 0.89 precision indicates that, out of all customers predicted as churn, 89% of them are actually churners. In practical terms, considering the confusion matrix, out of 332 customers predicted as churn, 297 of them are indeed churners.
+5. The final XGBoost performance was excellent. A 0.91 recall indicates that the model correctly identifies 91% of the churners. In practical terms, looking at the confusion matrix, it has accurately predicted 297 out of 325 attrited customers Furthermore, a 0.89 precision indicates that, out of all customers predicted as churn, 89% of them are actually churners. In practical terms, considering the confusion matrix, out of 332 customers predicted as churn, 297 of them are indeed churners.
 
 <img src="images/classification_report.png">
 
 <img src="images/confusion_matrix.png">
 
-8. Although one characteristic of ensemble models like XGBoost is the lack of interpretability, it was possible to interpret and confirm that the estimator results make sense and reinforce the insights found in the EDA (Exploratory Data Analysis) step by examining feature importances. The following features clearly demonstrated discrimination between attrited and existing customers.
+6. Although one characteristic of ensemble models like XGBoost is the lack of interpretability, it was possible to interpret and confirm that the estimator results make sense and reinforce the insights found in the EDA (Exploratory Data Analysis) step by examining feature importances. The following features clearly demonstrated discrimination between attrited and existing customers.
 
 <img src="images/feature_importances.png">
 

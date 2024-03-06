@@ -94,7 +94,7 @@ def sns_plots(data, features, histplot=True, countplot=False,
 
             else:
                 # Plotting histplot.
-                sns.histplot(data=data, x=feature, hue=hue, kde=kde, ax=ax, color=color)
+                sns.histplot(data=data, x=feature, hue=hue, kde=kde, ax=ax, color=color, stat='proportion')
 
             ax.set_title(feature)  
             ax.set_xlabel('')  
