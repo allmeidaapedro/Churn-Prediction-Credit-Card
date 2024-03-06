@@ -88,13 +88,15 @@ class DataIngestion:
         try:
             logging.info('Reading the dataset as a Pandas DataFrame and saving it as a csv.')
 
-            df = pd.read_csv('notebooks\data\BankChurners.csv')
+            data_path = '/Users/pedrohenriquealmeidaoliveira/Documents/data_science/Churn-Prediction-Credit-Card/input/BankChurners.csv'
+            df = pd.read_csv(data_path)
+
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
             df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
 
             logging.info('Dropping irrelevant features and obtaining X and y.')
 
-            features_to_drop = ['Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_2', 'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_1', 'CLIENTNUM']
+            features_to_drop = ['Avg_Open_To_Buy', 'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_2', 'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_1', 'CLIENTNUM']
 
             X = df.drop(columns=['Attrition_Flag']+features_to_drop)
             y = df['Attrition_Flag'].copy()

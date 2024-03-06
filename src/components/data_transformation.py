@@ -79,7 +79,12 @@ class DataTransformation:
         '''
 
         try:
-            numerical_features = ['customer_age', 'gender', 'dependent_count', 'months_on_book', 'total_relationship_count', 'months_inactive_12_mon', 'contacts_count_12_mon', 'credit_limit', 'total_revolving_bal', 'avg_open_to_buy', 'total_amt_chng_q4_q1', 'total_trans_amt', 'total_trans_ct', 'total_ct_chng_q4_q1', 'avg_utilization_ratio']
+            numerical_features = ['customer_age', 'gender', 'dependent_count', 
+                                  'months_on_book', 'total_relationship_count', 
+                                  'months_inactive_12_mon', 'contacts_count_12_mon', 
+                                  'credit_limit', 'total_revolving_bal', 'total_amt_chng_q4_q1', 
+                                  'total_trans_amt', 'total_trans_ct', 'total_ct_chng_q4_q1', 
+                                  'avg_utilization_ratio']
             target_encoder_feature = ['marital_status']
             ordinal_encoder_features = ['education_level', 'income_category', 'card_category']
 
@@ -93,7 +98,6 @@ class DataTransformation:
             target_pipeline = Pipeline(
                 steps=[
                     ('target_encoder',TargetEncoder(cols=target_encoder_feature)), 
-                    ('std_scaler', StandardScaler())
                     ]
                     )
             

@@ -121,7 +121,6 @@ class InputData:
         contacts_count_12_mon (int)       
         credit_limit (float)                
         total_revolving_bal (int)         
-        avg_open_to_buy (float)             
         total_amt_chng_q4_q1 (float)       
         total_trans_amt (int)            
         total_trans_ct (int)              
@@ -150,7 +149,6 @@ class InputData:
                  contacts_count_12_mon: int,
                  credit_limit: float,
                  total_revolving_bal: int,
-                 avg_open_to_buy: float,
                  total_amt_chng_q4_q1: float,
                  total_trans_amt: int,
                  total_trans_ct: int,
@@ -173,7 +171,6 @@ class InputData:
             contacts_count_12_mon (int)       
             credit_limit (float)                
             total_revolving_bal (int)         
-            avg_open_to_buy (float)             
             total_amt_chng_q4_q1 (float)       
             total_trans_amt (int)            
             total_trans_ct (int)              
@@ -195,7 +192,6 @@ class InputData:
         self.contacts_count_12_mon = contacts_count_12_mon
         self.credit_limit = credit_limit
         self.total_revolving_bal = total_revolving_bal
-        self.avg_open_to_buy = avg_open_to_buy
         self.total_amt_chng_q4_q1 = total_amt_chng_q4_q1
         self.total_trans_amt = total_trans_amt
         self.total_trans_ct = total_trans_ct
@@ -231,7 +227,6 @@ class InputData:
             input_data_dict['contacts_count_12_mon'] = [self.contacts_count_12_mon]
             input_data_dict['credit_limit'] = [self.credit_limit]
             input_data_dict['total_revolving_bal'] = [self.total_revolving_bal]
-            input_data_dict['avg_open_to_buy'] = [self.avg_open_to_buy]
             input_data_dict['total_amt_chng_q4_q1'] = [self.total_amt_chng_q4_q1]
             input_data_dict['total_trans_amt'] = [self.total_trans_amt]
             input_data_dict['total_trans_ct'] = [self.total_trans_ct]

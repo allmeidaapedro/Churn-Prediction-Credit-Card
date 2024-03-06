@@ -106,8 +106,8 @@ def evaluate_models_cv(models, X_train, y_train):
 
         x = np.arange(len(eval_df['Model']))
 
-        val_bars = plt.bar(x - width/2, eval_df['Average Val Score'], width, label='Average Validation Score', color='#66c2a5')
-        train_bars = plt.bar(x + width/2, eval_df['Train Score'], width, label='Train Score', color='#fc8d62')
+        val_bars = plt.bar(x - width/2, eval_df['Average Val Score'], width, label='Average Validation Score', color='#023047')
+        train_bars = plt.bar(x + width/2, eval_df['Train Score'], width, label='Train Score', color='#e85d04')
 
         plt.xlabel('Model')
         plt.ylabel('ROC-AUC Score')
@@ -211,13 +211,9 @@ def plot_feature_importances(model, data):
         sorted_feature_names = [feature_names[i] for i in indices]
         sorted_importances = importances[indices]
 
-        # Plot feature importances
-        color_sequence = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
-                        '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22']
-
         plt.figure(figsize=(12, 3))
         plt.title('Feature Importances')
-        plt.bar(range(len(importances)), sorted_importances, tick_label=sorted_feature_names, color=color_sequence)
+        plt.bar(range(len(importances)), sorted_importances, tick_label=sorted_feature_names, color='#023047')
         plt.xticks(rotation=90)
         plt.show()
 

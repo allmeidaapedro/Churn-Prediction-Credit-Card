@@ -74,7 +74,6 @@ def predict_datapoint():
             contacts_count_12_mon=request.form.get('contacts_count_12_mon'),
             credit_limit=request.form.get('credit_limit'),
             total_revolving_bal=request.form.get('total_revolving_bal'),
-            avg_open_to_buy=request.form.get('avg_open_to_buy'),
             total_amt_chng_q4_q1=request.form.get('total_amt_chng_q4_q1'),
             total_trans_amt=request.form.get('total_trans_amt'),
             total_trans_ct=request.form.get('total_trans_ct'),
