@@ -7,4 +7,4 @@ category-encoders==2.6.2
 xgboost==1.7.6
 scikit-optimize==0.9.0
 Flask==2.3.3
-# -e .
+-e .
