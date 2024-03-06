@@ -60,7 +60,7 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 <img src="images/target.png">
 
 2. Customers who churn tend to have lower credit limits, revolving balances, transaction amounts, transaction counts, changes in transaction counts, and average utilization ratios. This makes total sense because when a client is about to discontinue the service, he will make fewer transactions, resulting in lower values of these attributes.
-3. The bank must be alert to the distribution of the average utilization ratio. Being right-skewed means that most customers have a low utilization of the service. Particularly, the majority of them present zero utilization ratio. Therefore, the company must plan strategies to increase utilization and, consequently, revenue.
+3. The bank must be alert to the distribution of the average utilization ratio. Being right-skewed means that most customers have a low utilization of the service. Particularly, about 25% of them present zero utilization ratio. Therefore, the company must plan strategies to increase utilization and, consequently, revenue.
 
 <img src="images/numeric_distributions_by_churn.png">
 
