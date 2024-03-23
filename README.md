@@ -78,10 +78,13 @@ dissatisfaction? Also, when a client makes more than 5 contacts in a year, he wi
 
 <img src="images/months_inactive.png">
 
-7. Customer age and months on book are strongly positively correlated. The older a customer is, the more time he spends consuming the bank's credit card services and vice-versa. Thus, the company must focus its efforts on retaining the old loyal customers and increase the tenure of younger ones.
-8. Credit limit and average utilization ratio present an exponential decreasing relationship! This indicates that, as credit limit increases, the average utilization ratio decreases at an exponential rate. Thus, customers with higher credit limits use their credit cards less.
+7. The churn rate consistently increases monotonically as the number of contacts with the bank rises. Especially, all customers who made six contacts churned.
 
-<img src="images/scatterplots.png">
+<img src="images/churn_contacts.png">
+
+8. Customers with doctorate educational level present the highest churn rate among the other levels.
+
+<img src="images/churn_education.png">
 
 # 6. Modelling
 0. I preprocessed ordinal categorical variables with ordinal encoding in order to preserve the ordinal information and avoid dimensionality increase, and the other with target encoding because one-hot encoder can be damage to tree-based models and I am focusing on predictive power and robust models such as XGBoost. To numerical and ordinal encoded features, I applied standard scaling to test a bunch of models at once (although tree-based model don't require scaling, linear models do).
