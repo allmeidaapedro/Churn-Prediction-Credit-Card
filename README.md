@@ -74,7 +74,7 @@ dissatisfaction? Also, when a client makes more than 5 contacts in a year, he wi
 
 <img src="images/contacts_ct.png">
 
-6. 90% of the customers were inactive from 1 to 3 months in this period. The bank must plan strategies not only to increase the utilization ratio, but also to avoid customer inactivity.
+6. 90% of the customers were inactive from 1 to 3 months in the last 12 months. The bank must plan strategies not only to increase the utilization ratio, but also to avoid customer inactivity.
 
 <img src="images/months_inactive.png">
 
