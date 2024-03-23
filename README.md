@@ -67,7 +67,7 @@ Each step is explained in detail inside the notebooks, where I provide the ratio
 
 3. The bank must be alert to the distribution of the average utilization ratio. Being right-skewed means that most customers have a low utilization of the service. Particularly, about 25% of them present zero utilization ratio, and this is where most of the churners are located. It is a good indicator for churn event. Therefore, the company must plan strategies to increase utilization and, consequently, revenue.
 
-<img src="images/numeric_distributions_by_churn.png">
+<img src="images/utilization_ratio_churn.png">
 
 5. 75% of the customers contacted the bank at least 2 times in the last 12 months. The bank must pay attention to this and discover the reasons why customers are calling. Are they dissatisfied with the credit card service? If so, what specifically is causing their dissatisfaction? Also, when a client makes more than 5 contacts in a year, he will probably skip the service.
 6. Most of the customers were inactive for 2 or 3 months in the last 12 months. Particularly, 90% of them were inactive from 1 to 3 months in this period. The bank must plan strategies not only to increase the utilization ratio, but also to avoid customer inactivity.
