@@ -3,11 +3,11 @@
 <img src="images/churn.jpg">
 
 # 1. Description
-- This is an end-to-end machine learning project that utilizes XGBoost to predict customer's probability of churning in a bank's credit card service. It involves supervised learning (using a labeled training set) for classification, where the target is 1 if the customer attrited, else 0.
-- I implemented this project following some CI/CD principles and using modular coding. First, I developed my entire analysis (from EDA to modeling) in notebooks. Then, I divided the project development into components responsible for data ingestion, transformation, and model training, following the same steps as in the notebooks. Once I had done this, I created scripts for automating the training and prediction pipelines using these components. The training pipeline executes them and obtains all the machine learning model artifacts, while the prediction pipeline makes predictions by consuming the obtained artifacts. All of this was made with good practices like virtual environment use (isolating dependencies), exception handling, loggings, documentation (every script/function/class purposes and definitions are defined inside the files), etc. Afterward, I built a web app in Flask, integrating everything mentioned above. My objective with this was to get closer to a real data science project workflow by packaging my entire project as a package.
+- This is an end-to-end machine learning project that utilizes LightGBM to predict customer's probability of churning in a bank's credit card service. It involves supervised learning (using a labeled training set) for classification, where the target is 1 if the customer attrited, else 0.
+- I implemented this project following some CI/CD principles and using modular coding. First, I developed my entire analysis (from EDA to modeling) in notebooks. Then, I divided the project development into components responsible for data ingestion, transformation, and model training, following the same steps as in the notebooks. Once I had done this, I created scripts for automating the training and prediction pipelines using these components. The training pipeline executes them and obtains all the machine learning model artifacts, while the prediction pipeline makes predictions by consuming the obtained artifacts. All of this was made with good practices like virtual environment use (isolating dependencies), exception handling, loggings, documentation (every script/function/class purposes and definitions are defined inside the files), etc. Afterward, I built a web app API in Flask, integrating everything mentioned above. My objective with this was to get closer to a real data science project workflow by packaging my entire project as a package.
 
 # 2. Technologies and tools
-- The technologies and tools used were Python (Pandas, Numpy, Matplotlib, Seaborn, Scikit-Learn, Category-Encoders, Scikit-Optimize, Xgboost, Flask), Jupyter Notebook, Git and Github (version control), machine learning classification algorithms, statistics, Anaconda (terminal) and Visual Studio Code (project development environment).
+- The technologies and tools used were Python (Pandas, Numpy, Matplotlib, Seaborn, Scikit-Learn, optuna, LightGBM, Shap, Flask), Jupyter Notebook, Git and Github (version control), machine learning classification algorithms, statistics, Anaconda (terminal) and Visual Studio Code (project development environment).
 
 # 3. Business problem and project objective
 
@@ -46,8 +46,8 @@ The following pipeline was used, based on CRISP-DM framework:
 2. Collect the data and get a general overview of it.
 3. Split the data into train and test sets.
 4. Explore the data (exploratory data analysis)
-5. Data cleaning and preprocessing.
-6. Model training, comparison, selection and tuning.
+5. Feature engineering, data cleaning and preprocessing.
+6. Model training, comparison, feature selection and tuning.
 7. Final production model testing and evaluation.
 8. Conclude and interpret the model results.
 9. Deploy.
@@ -87,17 +87,15 @@ dissatisfaction? Also, when a client makes more than 5 contacts in a year, he wi
 <img src="images/churn_education.png">
 
 # 6. Modelling
-0. I preprocessed ordinal categorical variables with ordinal encoding in order to preserve the ordinal information and avoid dimensionality increase, and the other with target encoding because one-hot encoder can be damage to tree-based models and I am focusing on predictive power and robust models such as XGBoost. To numerical and ordinal encoded features, I applied standard scaling to test a bunch of models at once (although tree-based model don't require scaling, linear models do).
-1. I chose a set of models for performance comparison, analyzing the ROC-AUC score. Accuracy is not a good metric because the target is imbalanced.
-2. In order to select the best model for hyperparameter tuning and final evaluation, I trained and evaluated each of the models using stratified k-fold cross-validation, which provides a more reliable performance estimate.
-3. As XGBoost had the highest average validation score, I chose it for hyperparameter tuning and final model evaluation. Although it is overfitted, it also has an outstanding performance on validation data. However, this is not due to data leakage or modeling problems, but the quality of this dataset. The set of independent variables we have clearly separates churners and non-churners.
+0. I created two preprocessors. One for testing linear models, in which I applied one-hot encoding to categorical variables (linear models can leverage this encoding technique to preserve linearity assumption) and standard scaling to numerical ones (linear models are sensitive to scale because they used distance-based calculations or optimization algorithms such as gradient descent). For the tree-based models preprocessor, I applied ordinal encoding to ordinal categoric features in order to preserve this characteristic and target encoding to the reamining one. This is because one-hot encoding can be harmful for tree models, due to sparse representation and increased dimensionality. Finally, these algorithms don't require scaling, thus, numerical variables were included without any transformation. An important observation is that I performed feature engineering before preprocessing, creating a lot of relevant attributes with respect to churn discrimination. Some include average transaction amount, proportion of months inactive with respect to customer's tenure, and total spending. All these preprocessing steps were divided into transformer classes such that I could integrate everything into a sklearn's pipeline, facilitating the deployment in production environment.
+1. Then, I chose a set of linear a tree-based models to comparison through stratified k-fold cross validation, analyzing the ROC-AUC score. Accuracy is not a good metric because the target is imbalanced. The objective was to select the best model for the next steps.
+2. As LightGBM had the highest average validation score, I chose it for feature selection, hyperparameter tuning and final model evaluation. Although it is overfitted, it also has an outstanding performance on validation data. However, this is not due to data leakage or modeling problems, but the quality of this dataset. The set of independent variables we have clearly separates churners and non-churners.
 
-<img src="images/models_performances_kfold_cv.png">
+<img src="images/treemodels_cv.png">
 
-4. I tuned XGBoost model with Bayesian Search because it uses probabilistic models to intelligently explore the hyperparameter space, balancing exploration and exploitation. An important point here was to define a class_weight hyperparameter, such that the estimator was able to better learn the patterns in minority target class (churn customers).
-5. The final XGBoost performance was excellent. A 0.91 recall indicates that the model correctly identifies 91% of the churners. In practical terms, looking at the confusion matrix, it has accurately predicted 297 out of 325 attrited customers Furthermore, a 0.89 precision indicates that, out of all customers predicted as churn, 89% of them are actually churners. In practical terms, considering the confusion matrix, out of 332 customers predicted as churn, 297 of them are indeed churners.
-
-<img src="images/classification_report.png">
+3. I applied feature selection with the Recursive Feature Elimination (RFE) technique, which recursively select a subset of features with highest feature importances until the desired number of features is reached. As a result, 25 of the 40 variables were selected, including a lot of variables created in feature engineering step, ilustrating the importance of this task.
+4. I tuned LightGBM model with Bayesian Search because it uses probabilistic models to intelligently explore the hyperparameter space, balancing exploration and exploitation. An important point here was to define a class_weight hyperparameter, such that the estimator was able to better learn the patterns in minority target class (churn customers).
+5. The final LigthGBM performance was excellent. A 0.89 recall indicates that the model correctly identifies 89% of the churners. In practical terms, looking at the confusion matrix, it has accurately predicted 290 out of 325 churners. Furthermore, a 0.90 precision indicates that, out of all customers predicted as churn, 90% of them are actually churners. In practical terms, considering the confusion matrix, out of 324 customers predicted as churn, 297 of them are indeed churners. Finally, the probability scores follow an order, with churners being assigned to higher probabilities, demonstrating that the model outcomes are reliable.
 
 <img src="images/confusion_matrix.png">
 
@@ -105,16 +103,20 @@ dissatisfaction? Also, when a client makes more than 5 contacts in a year, he wi
 |----------|----------|-----------|----------|----------|----------|----------|----------|----------|----------|
 | LightGBM | 0.965943 | 0.895062  | 0.892308 | 0.893683 | 0.991279 | 0.898897 | 0.982559 | 0.964932 | 0.025852 |
 
-6. Although one characteristic of ensemble models like XGBoost is the lack of interpretability, it was possible to interpret and confirm that the estimator results make sense and reinforce the insights found in the EDA (Exploratory Data Analysis) step by examining feature importances. The following features clearly demonstrated discrimination between attrited and existing customers.
+6. Although one characteristic of ensemble models like LightGBM is the lack of interpretability, it was possible to interpret and confirm that the estimator results make sense and reinforce the insights found in the EDA (Exploratory Data Analysis) step by examining shap values. It is noticeable that lower values of transaction counts in the last 12 months have a positive impact in the log-odds of churning, and, consequently, in the probability of churning, while higher values have a negative impact. Surprisingly, higher values of average transaction amount tend to reflect a positive impact in the log-odds of churning, and, consequently, in the probability of churning, while lower values tend to have a negative impact.
 
-<img src="images/feature_importances.png">
+<img src="images/shap_beeswarm.png">
 
 # 7. Financial results
-- I have estimated a baseline financial outcome to assess whether the project is worthwhile. Although I did not have access to specific data to obtain the exact financial gain, a common revenue source for credit card companies is charging fees on the outstanding balance, known as the total revolving balance, which cardholders carry from month to month. Thus, I assumed the bank's fee is 18% (a common value) and performed the estimation based on it. The calculation was derived from the difference between the true positive gain (a 10% fee charged on outstanding balances as a retention strategy), the cost of retaining false positives (an 8% discount given on outstanding balances), and the cost of false negatives churning (the entire 18% fee on outstanding balances that would have been received). Consequently, it was possible to achieve an estimated gain of $198,098.82, excellent! However, this is merely an estimation to illustrate the potential benefits of applying the model. The actual result will depend on how the bank manages retention strategies based on the predicted churn probabilities. For example, if the bank aims to be more conservative to avoid expenses related to false positives, it will focus on clients with higher churn probabilities, thereby affecting the resulting finances.
+- I have estimated a baseline financial outcome to assess whether the project is worthwhile. Although I did not have access to specific data to obtain the exact financial gain, a common revenue source for credit card companies is charging fees on the outstanding balance, known as the total revolving balance, which cardholders carry from month to month. Thus, I assumed the bank's fee is 18% (a common value) and performed the estimation based on it. The calculation was derived from the difference between the true positive gain (a 10% fee charged on outstanding balances as a retention strategy), the cost of retaining false positives (an 8% discount given on outstanding balances), and the cost of false negatives churning (the entire 18% fee on outstanding balances that would have been received). Consequently, it was possible to achieve an estimated gain of $171,477, excellent! 
 - Finally, the results are excellent and the project objective was achieved. Now, the bank can access customer churn probabilities, facilitating informed decisions. This empowers strategic retention efforts and enhances decision-making. Thus, the business problem is solved.
 
 # 8. Web app and next steps
-- Once I built a model that is able to identify 91% of the churners, I developed a Flask web app such that the bank can get a customer's probability of churning by giving the input features information, solving the business problem. For the next steps, I will be focused on deploying this app in a cloud like AWS (I already defined a file containing Elastic Beanstalk configuration, .ebextensions/config.py). Anyway, I describe in the next topic how you can run this project on your local machine.
+- Once I built a model that is able to accurately predict the probability of a customer to churn, I developed a Flask API web app such that the bank can get a customer's probability of churning by giving the input features information, solving the business problem. For the next steps, I will be focused on deploying this app in a cloud like AWS (I already defined a file containing Elastic Beanstalk configuration, .ebextensions/config.py). Anyway, I describe in the next topic how you can run this project on your local machine.
+
+Logs for monitoring:
+
+<img src="images/logs.png">
 
 Web app home page:
 

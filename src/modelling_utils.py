@@ -357,35 +357,50 @@ class FeatureEngineer(BaseEstimator, TransformerMixin):
             pandas.DataFrame: Transformed DataFrame after engineering churn-related features.
         '''
         X_copy = X.copy()
-
+        discrete_features = ['customer_age', 
+                            'dependent_count', 
+                            'months_on_book', 
+                            'total_relationship_count', 
+                            'months_inactive_12_mon', 
+                            'contacts_count_12_mon',
+                            'total_trans_ct']
+        continuous_features = ['credit_limit', 
+                               'total_revolving_bal', 
+                               'total_amt_chng_q4_q1', 
+                               'total_trans_amt',  
+                               'total_ct_chng_q4_q1']
+        
+        X_copy[discrete_features] = X_copy[discrete_features].astype('int32')
+        X_copy[continuous_features] = X_copy[continuous_features].astype('float32')
+        
         # Construct ratio features.
-        X_copy['products_per_dependent'] = X_copy['total_relationship_count'] / X_copy['dependent_count']
-        X_copy['trans_amt_per_dependent'] = X_copy['total_trans_amt'] / X_copy['dependent_count']
-        X_copy['trans_ct_per_dependent'] = X_copy['total_trans_ct'] / X_copy['dependent_count']
-        X_copy['trans_amt_per_products'] = X_copy['total_trans_amt'] / X_copy['total_relationship_count']
-        X_copy['trans_ct_per_products'] = X_copy['total_trans_ct'] / X_copy['total_relationship_count']
-        X_copy['avg_trans_amt'] = X_copy['total_trans_amt'] / X_copy['total_trans_ct']
-        X_copy['credit_util_rate'] = X_copy['total_revolving_bal'] / X_copy['credit_limit']
-        X_copy['proportion_inactive_months'] = X_copy['months_inactive_12_mon'] / X_copy['months_on_book']
-        X_copy['products_per_tenure'] = X_copy['total_relationship_count'] / X_copy['months_on_book']
-        X_copy['products_per_contacts'] = X_copy['total_relationship_count'] / X_copy['contacts_count_12_mon']
-        X_copy['dependents_per_contacts'] = X_copy['dependent_count'] / X_copy['contacts_count_12_mon']
-        X_copy['trans_ct_per_contacts'] = X_copy['total_trans_ct'] / X_copy['contacts_count_12_mon']
-        X_copy['products_per_inactivity'] = X_copy['total_relationship_count'] / X_copy['months_inactive_12_mon']
-        X_copy['dependents_per_inactivity'] = X_copy['dependent_count'] / X_copy['months_inactive_12_mon']
-        X_copy['trans_ct_per_inactivity'] = X_copy['total_trans_ct'] / X_copy['months_inactive_12_mon']
-        X_copy['trans_amt_per_credit_limit'] = X_copy['total_trans_amt'] / X_copy['credit_limit']
-        X_copy['age_per_tenure'] = X_copy['customer_age'] / X_copy['months_on_book']
-        X_copy['trans_ct_per_tenure'] = X_copy['total_trans_ct'] / X_copy['months_on_book']
-        X_copy['trans_amt_per_tenure'] = X_copy['total_trans_amt'] / X_copy['months_on_book']
+        X_copy['products_per_dependent'] = (X_copy['total_relationship_count'] / X_copy['dependent_count']).astype('float32')
+        X_copy['trans_amt_per_dependent'] = (X_copy['total_trans_amt'] / X_copy['dependent_count']).astype('float32')
+        X_copy['trans_ct_per_dependent'] = (X_copy['total_trans_ct'] / X_copy['dependent_count']).astype('float32')
+        X_copy['trans_amt_per_products'] = (X_copy['total_trans_amt'] / X_copy['total_relationship_count']).astype('float32')
+        X_copy['trans_ct_per_products'] = (X_copy['total_trans_ct'] / X_copy['total_relationship_count']).astype('float32')
+        X_copy['avg_trans_amt'] = (X_copy['total_trans_amt'] / X_copy['total_trans_ct']).astype('float32')
+        X_copy['credit_util_rate'] = (X_copy['total_revolving_bal'] / X_copy['credit_limit']).astype('float32')
+        X_copy['proportion_inactive_months'] = (X_copy['months_inactive_12_mon'] / X_copy['months_on_book']).astype('float32')
+        X_copy['products_per_tenure'] = (X_copy['total_relationship_count'] / X_copy['months_on_book']).astype('float32')
+        X_copy['products_per_contacts'] = (X_copy['total_relationship_count'] / X_copy['contacts_count_12_mon']).astype('float32')
+        X_copy['dependents_per_contacts'] = (X_copy['dependent_count'] / X_copy['contacts_count_12_mon']).astype('float32')
+        X_copy['trans_ct_per_contacts'] = (X_copy['total_trans_ct'] / X_copy['contacts_count_12_mon']).astype('float32')
+        X_copy['products_per_inactivity'] = (X_copy['total_relationship_count'] / X_copy['months_inactive_12_mon']).astype('float32')
+        X_copy['dependents_per_inactivity'] = (X_copy['dependent_count'] / X_copy['months_inactive_12_mon']).astype('float32')
+        X_copy['trans_ct_per_inactivity'] = (X_copy['total_trans_ct'] / X_copy['months_inactive_12_mon']).astype('float32')
+        X_copy['trans_amt_per_credit_limit'] = (X_copy['total_trans_amt'] / X_copy['credit_limit']).astype('float32')
+        X_copy['age_per_tenure'] = (X_copy['customer_age'] / X_copy['months_on_book']).astype('float32')
+        X_copy['trans_ct_per_tenure'] = (X_copy['total_trans_ct'] / X_copy['months_on_book']).astype('float32')
+        X_copy['trans_amt_per_tenure'] = (X_copy['total_trans_amt'] / X_copy['months_on_book']).astype('float32')
         
         # Replace division by zero values with zero. It will have this 'zero' meaning.
         X_copy = X_copy.replace({np.inf: 0, 
                                  np.nan: 0})
         
         # Construct sum features.
-        X_copy['total_spending'] = X_copy['total_trans_amt'] + X_copy['total_revolving_bal']
-        X_copy['inactivity_contacts'] = X_copy['contacts_count_12_mon'] + X_copy['months_inactive_12_mon']
+        X_copy['total_spending'] = (X_copy['total_trans_amt'] + X_copy['total_revolving_bal']).astype('int32')
+        X_copy['inactivity_contacts'] = (X_copy['contacts_count_12_mon'] + X_copy['months_inactive_12_mon']).astype('int32')
         
         # Map to ordinal education level and income to sum them.
         education_mapping = {
@@ -410,10 +425,9 @@ class FeatureEngineer(BaseEstimator, TransformerMixin):
         # Construct interaction between education and income based feature.
         X_copy['education_numeric'] = X_copy['education_level'].map(education_mapping).astype('int32')
         X_copy['income_numeric'] = X_copy['income_category'].map(income_mapping).astype('int32')
-        X_copy['education_income_levels'] = X_copy['education_numeric'] + X_copy['income_numeric']
+        X_copy['education_income_levels'] = (X_copy['education_numeric'] + X_copy['income_numeric']).astype('int32')
         X_copy = X_copy.drop(columns=['education_numeric', 'income_numeric'])
         
-
         return X_copy
     
     

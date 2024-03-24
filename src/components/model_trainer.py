@@ -16,7 +16,7 @@ from src.exception import CustomException
 from src.logger import logging
 
 # Modelling.
-from xgboost import XGBClassifier
+from lightgbm import LGBMClassifier
 from sklearn.metrics import classification_report, roc_auc_score
 
 # Utils.
@@ -48,7 +48,7 @@ class ModelTrainerConfig:
 
 class ModelTrainer:
     '''
-    This class is responsible for training and saving the best XGBoost model
+    This class is responsible for training and saving the best LightGBM model
     using the best hyperparameters found in modelling notebook analysis with stratified 
     k-fold cross-validation and Bayesian optimization.
 
@@ -57,7 +57,7 @@ class ModelTrainer:
 
     Methods:
         apply_model_trainer(train_prepared, test_prepared):
-            Trains the best XGBoost model using the provided prepared training and testing data,
+            Trains the best LightGBM model using the provided prepared training and test data,
             and returns the classification report and ROC-AUC score on the test set.
 
     '''
@@ -74,7 +74,7 @@ class ModelTrainer:
     
     def apply_model_trainer(self, train_prepared, test_prepared):
         '''
-        Trains the best XGBoost model using the provided prepared training and testing data, 
+        Trains the best LightGBM model using the provided prepared training and test data, 
         the best hyperparameters found during the modelling notebook analysis using stratified k-fold
         cross validation and bayesian optimization and returns the classification report and ROC-AUC 
         score on the test set.
@@ -93,41 +93,45 @@ class ModelTrainer:
         '''
 
         try:
-            logging.info('Split train and test prepared arrays.')
+            logging.info('Split train and test prepared sets.')
             
-            X_train_prepared, X_test_prepared, y_train, y_test = train_prepared[:, :-1], test_prepared[:, :-1], train_prepared[:, -1], test_prepared[:, -1]
+            X_train_prepared = train_prepared.drop(columns=['churn_flag'])
+            X_test_prepared = test_prepared.drop(columns=['churn_flag'])
+            y_train = train_prepared['churn_flag'].copy()
+            y_test = test_prepared['churn_flag'].copy()
+            
+            logging.info('Train LightGBM with the best hyparameters found in modelling step.')
 
-            logging.info('Started to train the best XGBoost model with the best hyparameters found in modelling step.')
+            best_params = { 'objective': 'binary',
+                            'metric': 'roc_auc',
+                            'n_estimators': 1000,
+                            'verbosity': -1,
+                            'bagging_freq': 1,
+                            'class_weight': 'balanced', 
+                            'learning_rate': 0.017535345166904838,
+                            'num_leaves': 942,
+                            'subsample': 0.8490611533540497,
+                            'colsample_bytree': 0.3775159533799494,
+                            'min_data_in_leaf': 90}
 
-            best_params = {
-                'colsample_bytree': 0.6990559033956983,
-                'gamma': 9.029710156344564,
-                'lambda': 2.3076689805633372,
-                'learning_rate': 0.12498672387208519,
-                'max_depth': 4,
-                'min_child_weight': 3,
-                'n_estimators': 500,
-                'scale_pos_weight': 10,
-                'subsample': 0.7541369107532966
-            }
-
-            best_model = XGBClassifier(**best_params)
+            best_model = LGBMClassifier(**best_params)
 
             best_model.fit(X_train_prepared, y_train)
 
-            logging.info('Saving the best model.')
+            logging.info('Save the best model.')
 
             save_object(
                 file_path=self.model_trainer_config.model_file_path,
                 object=best_model
             )
 
-            logging.info('Best model classification report and roc-auc score on test set returned.')
+            logging.info('Best model classification report and roc-auc score on test set.')
 
-            final_predictions = best_model.predict(X_test_prepared)
+            y_pred = best_model.predict(X_test_prepared)
+            churn_probas = best_model.predict_proba(X_test_prepared)[:, 1]
             
-            class_report = classification_report(y_test, final_predictions)
-            auc_score = roc_auc_score(y_test, final_predictions)
+            class_report = classification_report(y_test, y_pred)
+            auc_score = roc_auc_score(y_test, churn_probas)
 
             return class_report, auc_score
 

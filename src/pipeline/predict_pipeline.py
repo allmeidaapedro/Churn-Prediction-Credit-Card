@@ -69,22 +69,13 @@ class PredictPipeline:
             model = load_object(file_path=model_path)
             preprocessor = load_object(file_path=preprocessor_path)
 
-            logging.info('Model and preprocessor succesfully loaded.')
-
-            logging.info('Mapping gender variable.')
-
-            # Gender variable mapping needed.
-            features['gender'] = features['gender'].map({'M': 1, 'F': 0})
-
-            logging.info('Preprocessing the input data.')
+            logging.info('Preprocess the input data.')
 
             prepared_data = preprocessor.transform(features)
-
-            logging.info('Input data prepared for prediction.')
-
-            logging.info('Predicting.')
             
-            # Predicting customer's churn probability.
+            logging.info('Predict.')
+            
+            # Predict customer's churn probability.
             predicted_proba = model.predict_proba(prepared_data)[:, 1][0]
 
             # Prediction output (customer's probability of churning).

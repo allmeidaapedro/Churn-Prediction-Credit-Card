@@ -10,15 +10,12 @@ from src.exception import CustomException
 # Components for data ingestion, transformation and model training.
 
 # Data ingestion.
-from src.components.data_ingestion import DataIngestionConfig
 from src.components.data_ingestion import DataIngestion
 
 # Data transformation.
-from src.components.data_transformation import DataTransformationConfig
 from src.components.data_transformation import DataTransformation
 
 # Model trainer.
-from src.components.model_trainer import ModelTrainerConfig
 from src.components.model_trainer import ModelTrainer
 
 
@@ -57,23 +54,23 @@ class TrainPipeline:
         '''
 
         try:
-            logging.info('Train full pipeline started.')
+            logging.info('Start training pipeline.')
 
-            logging.info('Data Ingestion component started.')
+            logging.info('Start data ingestion.')
 
             data_ingestion = DataIngestion()
             train, test = data_ingestion.apply_data_ingestion()
 
-            logging.info('Finished Data Ingestion component. Train and test entire sets obtained (artifacts).')
+            logging.info('Finish data ingestion. Obtain training and test entire sets (artifacts).')
 
-            logging.info('Data Transformation component started.')
+            logging.info('Start data transformation.')
             
             data_transformation = DataTransformation()
             train_prepared, test_prepared, _ = data_transformation.apply_data_transformation(train, test)
 
-            logging.info('Finished Data Transformation component. Train and test entire prepared sets obtained (artifacts).')
+            logging.info('Finish data transformation. Obtain training and test entire prepared sets (artifacts).')
 
-            logging.info('Model Trainer component started.')
+            logging.info('Start model trainer.')
             
             model_trainer = ModelTrainer()
 
@@ -83,7 +80,7 @@ class TrainPipeline:
             print(f'\nFinal model roc-auc score:')
             print(auc_score)
 
-            logging.info('Finished Model Trainer component. Final best model obtained (artifacts).')
+            logging.info('Finish model trainer. Obtain final best model (artifacts).')
 
         except Exception as e:
             raise CustomException(e, sys)

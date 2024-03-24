@@ -16,10 +16,9 @@ import pandas as pd
 from dataclasses import dataclass
 
 # Preprocessing.
-from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OrdinalEncoder, StandardScaler
-from category_encoders import TargetEncoder
+from src.modelling_utils import FeatureEngineer, OneHotFeatureEncoder, OrdinalFeatureEncoder, TargetFeatureEncoder, RecursiveFeatureEliminator, ColumnDropper
+from lightgbm import LGBMClassifier
 
 # Utils.
 from src.utils import save_object
@@ -79,40 +78,54 @@ class DataTransformation:
         '''
 
         try:
-            numerical_features = ['customer_age', 'gender', 'dependent_count', 
-                                  'months_on_book', 'total_relationship_count', 
-                                  'months_inactive_12_mon', 'contacts_count_12_mon', 
-                                  'credit_limit', 'total_revolving_bal', 'total_amt_chng_q4_q1', 
-                                  'total_trans_amt', 'total_trans_ct', 'total_ct_chng_q4_q1', 
-                                  'avg_utilization_ratio']
-            target_encoder_feature = ['marital_status']
-            ordinal_encoder_features = ['education_level', 'income_category', 'card_category']
+            # Construct the preprocessor for tree-based models.
+            one_hot_encoding_features = ['gender']
 
-            ordinal_pipeline = Pipeline(
+            # I will encode 'unknown' as the last one, due to its churn rate (among the first or second highest one).
+            ordinal_encoding_orders = {
+                'education_level': ['Uneducated',
+                                    'High School',
+                                    'College',
+                                    'Graduate',
+                                    'Post-Graduate',
+                                    'Doctorate',
+                                    'Unknown'],
+                'income_category': ['Less than $40K',
+                                    '$40K - $60K',
+                                    '$60K - $80K',
+                                    '$80K - $120K',
+                                    '$120K +',
+                                    'Unknown'],
+                'card_category': ['Blue',
+                                'Silver',
+                                'Gold',
+                                'Platinum']
+            }
+
+            target_encoding_features = ['marital_status']
+
+            to_drop_features = ['naive_bayes_classifier_attrition_flag_card_category_contacts_count_12_mon_dependent_count_education_level_months_inactive_12_mon_1', 
+                                'naive_bayes_classifier_attrition_flag_card_category_contacts_count_12_mon_dependent_count_education_level_months_inactive_12_mon_2',
+                                'clientnum',
+                                'avg_open_to_buy']
+
+            logging.info(f'Categorical features: {one_hot_encoding_features+list(ordinal_encoding_orders.keys()) + target_encoding_features}.')
+            logging.info(f'One-hot encoding applied to {one_hot_encoding_features}.')
+            logging.info(f'Ordinal encoding applied to: {list(ordinal_encoding_orders.keys())}.')
+            logging.info(f'Target encoding applied to: {target_encoding_features}.')
+
+            preprocessor = Pipeline(
                 steps=[
-                    ('ordinal_encoder', OrdinalEncoder()),
-                    ('std_scaler', StandardScaler())
-                    ]
-                    )
-
-            target_pipeline = Pipeline(
-                steps=[
-                    ('target_encoder',TargetEncoder(cols=target_encoder_feature)), 
-                    ]
-                    )
-            
-            logging.info(f'Categorical features: {target_encoder_feature+ordinal_encoder_features}.')
-            logging.info(f'Target encoder will be applied to {target_encoder_feature}.')
-            logging.info(f'Ordinal encoder will be applied to: {ordinal_encoder_features}.')
-            logging.info(f'Numerical features: {numerical_features}.')
-
-            preprocessor = ColumnTransformer(
-                transformers=[
-                    ('ordinal', ordinal_pipeline, ordinal_encoder_features),
-                    ('target', target_pipeline, target_encoder_feature),
-                    ('std_scaler', StandardScaler(), numerical_features)
-                    ], remainder='passthrough'
-                    )
+                    ('feature_engineer', FeatureEngineer()),
+                    ('one_hot_encoder', OneHotFeatureEncoder(to_encode=one_hot_encoding_features)),
+                    ('ordinal_encoder', OrdinalFeatureEncoder(to_encode=ordinal_encoding_orders)),
+                    ('target_encoder', TargetFeatureEncoder(to_encode=target_encoding_features)),
+                    ('col_dropper', ColumnDropper(to_drop=to_drop_features)),
+                    ('rfe_selector', RecursiveFeatureEliminator(n_folds=5, 
+                                                                scoring='roc_auc',
+                                                                estimator=LGBMClassifier()))
+                ]
+            )
             
             return preprocessor
         
@@ -135,44 +148,33 @@ class DataTransformation:
         
         try:
 
-            logging.info('Reading train and test sets.')
+            logging.info('Read training and test sets.')
 
-            # obtaining train and test entire sets from artifacts.
+            # Obtain train and test entire sets from artifacts.
             train = pd.read_csv(train_path)
             test = pd.read_csv(test_path)
 
-            logging.info('Obtaining preprocessor object.')
+            logging.info('Obtain preprocessor object.')
 
             preprocessor = self.get_preprocessor()
 
-            logging.info('Binarizing gender and target, getting train and test predictor and target sets.')
-
-            # Expressing gender and target as binary features.
-            train['gender'] = train['gender'].map({'M': 1, 'F': 0})
-            train['churn_flag'] = train['churn_flag'].map({'Attrited Customer': 1, 'Existing Customer': 0})
-
-            test['gender'] = test['gender'].map({'M': 1, 'F': 0})
-            test['churn_flag'] = test['churn_flag'].map({'Attrited Customer': 1, 'Existing Customer': 0})
-
-            # Getting train and test predictor and target sets.
+            # Get train and test predictor and target sets.
             X_train = train.drop(columns=['churn_flag'])
             y_train = train['churn_flag'].copy()
 
             X_test = test.drop(columns=['churn_flag'])
             y_test = test['churn_flag'].copy()
 
-            logging.info('Preprocessing train and test sets.')
+            logging.info('Preprocess training and test sets.')
 
             X_train_prepared = preprocessor.fit_transform(X_train, y_train)
             X_test_prepared = preprocessor.transform(X_test)
+            
+            print(f'Final columns: {X_train_prepared.columns.tolist()}')
 
-            # Getting final train and test entire prepared arrays.
-            train_prepared = np.c_[
-                X_train_prepared, np.array(y_train)
-            ]
-            test_prepared = np.c_[X_test_prepared, np.array(y_test)]
-
-            logging.info('Entire train and test sets prepared.')
+            # Get final training and test entire prepared sets.
+            train_prepared = pd.concat([X_train_prepared, y_train.reset_index(drop=True)], axis=1)
+            test_prepared = pd.concat([X_test_prepared, y_test.reset_index(drop=True)], axis=1)
 
             logging.info('Save preprocessing object.')
 
