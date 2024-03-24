@@ -101,6 +101,10 @@ dissatisfaction? Also, when a client makes more than 5 contacts in a year, he wi
 
 <img src="images/confusion_matrix.png">
 
+| Model    | Accuracy | Precision | Recall   | F1-Score | ROC-AUC  | KS       | Gini     | PR-AUC   | Brier    |
+|----------|----------|-----------|----------|----------|----------|----------|----------|----------|----------|
+| LightGBM | 0.965943 | 0.895062  | 0.892308 | 0.893683 | 0.991279 | 0.898897 | 0.982559 | 0.964932 | 0.025852 |
+
 6. Although one characteristic of ensemble models like XGBoost is the lack of interpretability, it was possible to interpret and confirm that the estimator results make sense and reinforce the insights found in the EDA (Exploratory Data Analysis) step by examining feature importances. The following features clearly demonstrated discrimination between attrited and existing customers.
 
 <img src="images/feature_importances.png">
