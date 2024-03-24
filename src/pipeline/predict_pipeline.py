@@ -73,6 +73,9 @@ class PredictPipeline:
 
             prepared_data = preprocessor.transform(features)
             
+            # Assert input data is float64 data type.
+            prepared_data = prepared_data.astype('float64')
+            
             logging.info('Predict.')
             
             # Predict customer's churn probability.
