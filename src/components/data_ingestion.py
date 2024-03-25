@@ -88,7 +88,7 @@ class DataIngestion:
         try:
             logging.info('Read the dataset as a Pandas DataFrame and save it as a csv.')
 
-            data_path = '/Users/pedrohenriquealmeidaoliveira/Documents/data_science/Churn-Prediction-Credit-Card/input/BankChurners.csv'
+            data_path = '../input/BankChurners.csv'
             df = pd.read_csv(data_path)
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
